@@ -9,38 +9,38 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'washington': 'washington.csv' }
 
 def get_filters():
-    print('Hello! Let\'s explore some US bikeshare data!')
+    print('Hello! Now Let\'s explore some interesting US bikeshare data!')
 
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-    city = input("Please Select one of the city between Chicago, New York City or Washington: ").lower()
+    city_of_choice = input("Please Select one of the cities between Chicago, New York City or Washington to begin: ").lower()
 
-    if city in ['chicago', 'new york city', 'washington']:
-        overview = pd.read_csv(CITY_DATA[city])
-        print('Here the first 5 rows from',city, ':\n', overview.head(5))
-    while city not in ['chicago', 'new york city', 'washington']:
-        print('Not Valid')
-        city = input("Please Select one of the city between Chicago, New York City or Washington again: ").lower()
-        overview = pd.read_csv(CITY_DATA[city])
-        print('Here the first 5 rows from',city, ':\n', overview.head(5))
+    if city_of_choice in ['chicago', 'new york city', 'washington']:
+        overview = pd.read_csv(CITY_DATA[city_of_choice])
+        print('Here you have the first 5 rows from',city_of_choice, ':\n', overview.head(5))
+    while city_of_choice not in ['chicago', 'new york city', 'washington']:
+        print('Not Valid. Ensure you entered a valid city name')
+        city_of_choice = input("Please Select one of the cities between Chicago, New York City or Washington again: ").lower()
+        overview = pd.read_csv(CITY_DATA[city_of_choice])
+        print('Here you have the first 5 rows from',city_of_choice, ':\n', overview.head(5))
 
     # get user input for month (all, january, february, ... , june)
-    month = input("Please Select the month between January to June or all: ").lower()
+    month = input("Please Select the month between January and June or all to begin: ").lower()
     while month not in ['january', 'february', 'march', 'april', 'may', 'june', 'all']:
-        print('Not Valid')
+        print('Not Valid. Ensure your selection is between January and June')
         month = input("Please Select the month between January to June again: ").lower()
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
-    day = input("Please Select the day of the week or all: ").lower()
+    day = input("Please Select one day of the week to investigate or all: ").lower()
     while day not in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']:
         print('Not Valid')
         day = input("Please Select the day of the week again: ").lower()
 
     print('-'*40)
-    return city, month, day
+    return city_of_choice, month, day
 
-def load_data(city, month, day):
+def load_data(city_of_choice, month, day):
     # load data file into a dataframe
-    df = pd.read_csv(CITY_DATA[city])
+    df = pd.read_csv(CITY_DATA[city_of_choice])
 
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
@@ -64,7 +64,7 @@ def load_data(city, month, day):
         df = df[df['day_of_week'] == day.title()]
 
     return df
-    
+
 
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
@@ -75,7 +75,7 @@ def time_stats(df):
     # display the most common month
     most_common_month = df['month'].mode()[0]
     most_common_month_name = cal.month_name[most_common_month]
-    
+
     # display the most common day of week
     most_common_day = df['day_of_week'].mode()[0]
 
@@ -101,7 +101,7 @@ def station_stats(df):
     popular_end_station = df['End Station'].mode()[0]
 
     # display most frequent combination of start station and end station trip
-    df['start end station'] = df['Start Station'] + ' and ' + df['End Station'] 
+    df['start end station'] = df['Start Station'] + ' and ' + df['End Station']
     popular_start_end_station = df['start end station'].mode()[0]
 
     print('Most commonly used start station:', popular_start_station)
@@ -135,7 +135,7 @@ def user_stats(df):
 
     # Display counts of user types
     counts_user_types = df['User Type'].value_counts()
-    
+
     print('Counts of user types:\n', counts_user_types, '\n')
 
     # Display counts of gender
@@ -143,7 +143,7 @@ def user_stats(df):
         counts_gender = df['Gender'].value_counts()
         print('Counts of gender:\n', counts_gender, '\n')
     else:
-        print('There is no information in Gender')
+        print('There is no record in Gender')
 
     # Display earliest, most recent, and most common year of birth
     if 'Birth Year' in df.columns:
@@ -154,22 +154,22 @@ def user_stats(df):
         print('Most recent year of birth: ', most_recent_yob)
         print('Most common year of birth: ', most_common_yob)
     else:
-        print('There is no information in Birth Year')
+        print('There is no record in Birth Year')
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
 def main():
     while True:
-        city, month, day = get_filters()
-        df = load_data(city, month, day)
+        city_of_choice, month, day = get_filters()
+        df = load_data(city_of_choice, month, day)
 
         time_stats(df)
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
 
-        restart = input('\nWould you like to restart? Enter yes or no.\n')
+        restart = input('\nWould you like to explore more? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
 
