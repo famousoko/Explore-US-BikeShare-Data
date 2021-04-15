@@ -1,6 +1,6 @@
 # Explore-US-Bikeshare-Data
 
-This project was completed as part of the Udacity Data Analyst Nanodegree program requirements.
+This project was completed is part of the Udacity Programming for Data Science with Python requirements.
 
 ## Overview
 
