@@ -1,4 +1,3 @@
-
 import time
 import pandas as pd
 import numpy as np
@@ -15,8 +14,21 @@ def get_filters():
     city_of_choice = input("Please Select one of the cities between Chicago, New York City or Washington to begin: ").lower()
 
     if city_of_choice in ['chicago', 'new york city', 'washington']:
-        overview = pd.read_csv(CITY_DATA[city_of_choice])
-        print('Here you have the first 5 rows from',city_of_choice, ':\n', overview.head(5))
+        df = pd.read_csv(CITY_DATA[city_of_choice])
+#########################################################################################################
+        view_data = input('\nWould you like to view 5 rows of individual trip data? Enter yes or no\n')
+        start_loc = 0
+        stop_loc = 5
+    while (view_data == "yes"):
+        print(df.iloc[start_loc:stop_loc])
+        start_loc += 5
+        stop_loc += 5
+        ##print('Here you have the 5 rows from',city_of_choice, ':\n', df.head(5))
+
+        view_data = input("Do you wish to continue?: ").lower()
+
+
+#########################################################################################################
     while city_of_choice not in ['chicago', 'new york city', 'washington']:
         print('Not Valid. Ensure you entered a valid city name')
         city_of_choice = input("Please Select one of the cities between Chicago, New York City or Washington again: ").lower()
